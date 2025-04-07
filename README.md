@@ -11,13 +11,67 @@ Nara is a Chrome extension that helps users manage their tasks and reminders eff
 ## Enhancement Options
 Choose one of the following enhancements to implement:
 
-1. **Speech Bubble Encouragement**: Implement a feature where, whenever the user checks off a task, a speech or thought bubble appears near the deer with a short, encouraging message (e.g., “Great job!”, “You’re making progress!”, “Keep going!”).
-2. **Daily Gratitude Log**: Implement a small text area where users can note one thing they’re grateful for each day. Over time, they can revisit a dedicated “gratitude log” to see their positive moments. Provide an interesting method to save these entries and display them on a separate screen so users can easily access their past entries.
-3. **Mood Selection Prompt**: Implement a simple mood selection feature(e.g., happy, stressed, neutral) with a small icon or emoji. This allows users to log their emotional state quickly each day.
-4. **Rotating Weekly Challenge**: Implement a weekly challenge system—such as “Drink 8 glasses of water each day” or “Take a 10-minute walk daily.” Users can check off these mini-challenges alongside their normal tasks for extra motivation.
-5. **Inspirational Quote Overlay**: Implement a short inspirational quote or positive affirmation that appears on each new tab, displayed in a subtle text overlay.
-6. **Implement a History Feature**: Maintain a log of all tasks and reminders created by the user, allowing them to revisit past items and track progress over time.
-7. **Custom Feature**: Propose a unique feature (requires instructor/TA approval).
+1. **Speech Bubble Encouragement**:
+   - Identify the task completion event listener in the JavaScript code
+   - Create a function to generate random encouraging messages from an array
+   - Design a speech bubble element using HTML/CSS
+   - Implement a function to position the bubble near the deer mascot
+   - Add animation for the bubble to appear and disappear after a few seconds
+   - Update the task completion handler to trigger the speech bubble
+
+2. **Daily Gratitude Log**:
+   - Add a text input area to the main UI with a character limit
+   - Create a "Save Gratitude" button with event listener
+   - Implement Chrome storage API calls to save entries with timestamps
+   - Design a new "Gratitude Log" page with HTML/CSS
+   - Add navigation to access the gratitude log from the main interface
+   - Implement a function to retrieve and display past entries chronologically
+   - Add options to filter or search through past gratitude entries
+
+3. **Mood Selection Prompt**:
+   - Design a set of mood icons/emojis using CSS or SVG
+   - Create a mood selection dropdown or button group in the UI
+   - Implement event listeners for mood selection
+   - Use Chrome storage API to save mood data with timestamps
+   - Create a function to prompt for mood input if not provided that day
+   - Add a simple visualization (calendar or chart) to track mood over time
+   - Implement a function to correlate moods with task completion (optional)
+
+4. **Rotating Weekly Challenge**:
+   - Create an array of predefined weekly challenges
+   - Implement a function to select a new challenge each week
+   - Design UI elements to display the current challenge
+   - Add checkboxes for each day of the week
+   - Use Chrome storage API to persist challenge progress
+   - Implement a notification system to remind users of the challenge
+   - Create a function to reset progress and select a new challenge weekly
+
+5. **Inspirational Quote Overlay**:
+   - Create an array of inspirational quotes or integrate with a quotes API
+   - Design a subtle, non-intrusive overlay using CSS
+   - Implement a function to randomly select quotes
+   - Add the overlay to the new tab page initialization
+   - Include options to customize the quote display (position, font, etc.)
+   - Add subtle animations for the quote appearance
+   - Implement a refresh button to get a new quote manually
+
+6. **Implement a History Feature**:
+   - Modify the task creation and completion functions to log events
+   - Design a history page with HTML/CSS for displaying past activities
+   - Use Chrome storage API to store and retrieve the history data
+   - Implement filtering options (by date, completion status, etc.)
+   - Add a function to generate statistics from historical data
+   - Create a visual timeline or calendar view of task history
+   - Include an option to export history data
+
+7. **Custom Feature**:
+   - Draft a detailed proposal including:
+     - Feature description and user benefits
+     - Technical implementation plan
+     - UI/UX mockups or wireframes
+     - List of required technologies or APIs
+     - Estimated development timeline
+   - Submit to instructor/TA for approval before implementation
 
 ## Getting Started
 
