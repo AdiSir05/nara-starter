@@ -488,3 +488,91 @@ input[type="checkbox"]:checked+.task-text {
     opacity: 0.95;
     animation: welcomeFadeIn 1s ease-out forwards;
     }
+
+/* Quote Modal Styles */
+#quote-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  z-index: 1000;
+}
+
+#quote-modal h2 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+#quote-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: #444;
+}
+
+#quote-author {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+#close-quote {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+#close-quote:hover {
+  background-color: #357abd;
+}
+
+.quote-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+#refresh-quote {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+#refresh-quote:hover {
+  background-color: #357abd;
+}
+
+#close-quote {
+  background-color: #6B7280;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+#close-quote:hover {
+  background-color: #4B5563;
+}

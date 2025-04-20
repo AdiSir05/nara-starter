@@ -1,4 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Quote functionality
+  const quoteModal = document.getElementById("quote-modal");
+  const quoteText = document.getElementById("quote-text");
+  const quoteAuthor = document.getElementById("quote-author");
+  const closeQuoteButton = document.getElementById("close-quote");
+  const refreshQuoteButton = document.getElementById("refresh-quote");
+
+  async function fetchQuote() {
+    try {
+      // Use a different API endpoint that's more reliable
+      const response = await fetch('https://type.fit/api/quotes');
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      const quotes = await response.json();
+      // Get a random quote from the array
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      const randomQuote = quotes[randomIndex];
+      
+      quoteText.textContent = randomQuote.text;
+      // Remove "type.fit" from author if it exists
+      const author = randomQuote.author ? randomQuote.author.replace(', type.fit', '') : 'Unknown';
+      quoteAuthor.textContent = `- ${author}`;
+      quoteModal.classList.remove("hidden");
+    } catch (error) {
+      console.error("Error fetching quote:", error);
+      // Use a different fallback quote
+      quoteText.textContent = "Success is not final, failure is not fatal: it is the courage to continue that counts.";
+      quoteAuthor.textContent = "- Winston Churchill";
+      quoteModal.classList.remove("hidden");
+    }
+  }
+
+  // Add click event listener for refresh button
+  refreshQuoteButton.addEventListener("click", () => {
+    console.log("Refresh button clicked");
+    fetchQuote();
+  });
+
+  closeQuoteButton.addEventListener("click", () => {
+    quoteModal.classList.add("hidden");
+  });
+
+  // Show quote modal when page loads
+  fetchQuote();
+
   const backgroundContainer = document.createElement("div");
   backgroundContainer.className = "background-container";
   document.body.appendChild(backgroundContainer);
