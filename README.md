@@ -5,6 +5,12 @@ This assignment involves enhancing a Chrome extension developed by one of the To
 
 **Original project:** [Nara](https://github.com/luyiZhang818/Nara-Chrome-Extension)
 
+## Latest Updates
+The extension has been enhanced with two new features to promote mental well-being:
+
+1. **Daily Quotes**: Users now receive inspirational quotes each day to provide motivation and positive reinforcement.
+2. **Mindfulness Exercises**: A new section has been added with guided mindfulness exercises to help users take short breaks and practice self-care throughout their day.
+
 ## Project Description
 Nara is a Chrome extension that helps users manage their tasks and reminders efficiently. Your task is to enhance this extension by implementing new features.
 
