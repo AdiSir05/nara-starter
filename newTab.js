@@ -498,39 +498,34 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("exercise-3")
   ];
 
-  // Base mindfulness exercises to use as fallback
-  const baseMindfulnessExercises = [
+  // Curated list of mindfulness exercises
+  const mindfulnessExercisesList = [
     "Take 5 deep breaths, focusing on the sensation of air entering and leaving your body",
     "Practice the 5-4-3-2-1 grounding technique: Name 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste",
-    "Do a 3-minute body scan meditation, focusing on each part of your body from head to toe"
+    "Do a 3-minute body scan meditation, focusing on each part of your body from head to toe",
+    "Write down three things you're grateful for today",
+    "Spend 2 minutes focusing on your breath, counting each inhale and exhale",
+    "Practice mindful walking for 5 minutes, paying attention to each step",
+    "Listen to calming music and focus on the sounds for 3 minutes",
+    "Do a quick body stretch while focusing on your breathing",
+    "Write down one positive affirmation for yourself",
+    "Take a moment to observe your thoughts without judgment",
+    "Practice progressive muscle relaxation for 3 minutes",
+    "Do a mindful eating exercise with a small snack",
+    "Write a short journal entry about your current feelings",
+    "Practice square breathing: inhale 4 counts, hold 4 counts, exhale 4 counts, hold 4 counts",
+    "Take a digital detox break for 5 minutes",
+    "Practice loving-kindness meditation for 3 minutes",
+    "Do a quick body scan and release any tension you find",
+    "Write down one thing you're looking forward to",
+    "Practice mindful listening to your surroundings",
+    "Take a moment to appreciate something beautiful around you",
+    "Do a quick gratitude reflection",
+    "Practice mindful stretching for 2 minutes",
+    "Write down one thing you learned today",
+    "Take a moment to appreciate your body's capabilities",
+    "Practice mindful observation of nature for 3 minutes"
   ];
-
-  async function fetchMindfulnessExercises() {
-    try {
-      // Try to fetch from the primary API
-      const response = await fetch('https://zenquotes.io/api/quotes/mindfulness');
-      
-      if (!response.ok) {
-        throw new Error('Primary API failed');
-      }
-      
-      const data = await response.json();
-      
-      // Extract exercises from the quotes
-      const exercises = data.map(quote => quote.q).slice(0, 3);
-      
-      // If we don't get enough exercises, fill with base exercises
-      while (exercises.length < 3) {
-        exercises.push(baseMindfulnessExercises[exercises.length]);
-      }
-      
-      return exercises;
-    } catch (error) {
-      console.error("Error fetching mindfulness exercises:", error);
-      // Use base exercises as fallback
-      return baseMindfulnessExercises;
-    }
-  }
 
   function getDailyExercises() {
     return new Promise((resolve) => {
@@ -539,7 +534,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const todayStr = today.toISOString().split('T')[0];
       
       // Check if we have stored exercises for today
-      chrome.storage.local.get(['mindfulnessExercises', 'lastUpdateDate', 'currentCategory'], async (data) => {
+      chrome.storage.local.get(['mindfulnessExercises', 'lastUpdateDate', 'currentCategory'], (data) => {
         if (data.lastUpdateDate === todayStr && data.mindfulnessExercises) {
           // Use stored exercises if they exist for today
           updateExerciseDisplay(data.mindfulnessExercises);
@@ -549,24 +544,17 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           resolve(data.mindfulnessExercises);
         } else {
-          try {
-            // Fetch new exercises from API
-            const newExercises = await fetchMindfulnessExercises();
-            
-            // Store the new exercises and today's date
-            chrome.storage.local.set({
-              mindfulnessExercises: newExercises,
-              lastUpdateDate: todayStr
-            });
-            
-            updateExerciseDisplay(newExercises);
-            resolve(newExercises);
-          } catch (error) {
-            console.error("Error getting exercises:", error);
-            // Use base exercises as fallback
-            updateExerciseDisplay(baseMindfulnessExercises);
-            resolve(baseMindfulnessExercises);
-          }
+          // Get 3 random exercises from our curated list
+          const newExercises = shuffleArray([...mindfulnessExercisesList]).slice(0, 3);
+          
+          // Store the new exercises and today's date
+          chrome.storage.local.set({
+            mindfulnessExercises: newExercises,
+            lastUpdateDate: todayStr
+          });
+          
+          updateExerciseDisplay(newExercises);
+          resolve(newExercises);
         }
       });
     });
@@ -687,13 +675,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // Reset everything when "Yes" is clicked
   resetYesButton.addEventListener("click", () => {
     // Clear the state in chrome.storage.local
-    chrome.storage.local.set({ state: null }, () => {
+    chrome.storage.local.set({ 
+      state: null,
+      mindfulnessExercises: null,
+      lastUpdateDate: null,
+      currentCategory: null 
+    }, () => {
       console.log("State reset to initial state.");
     });
 
     // Reset the UI to the initial state
     tasksContainer.classList.add("hidden");
     document.getElementById("welcome-message").classList.remove("hidden");
+    mindfulnessContainer.classList.add("hidden"); // Hide mindfulness container
     changeBackgroundWithSlide(initialBackground);
 
     // Remove thank you message if it exists
