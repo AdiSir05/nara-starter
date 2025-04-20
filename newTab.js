@@ -1,4 +1,80 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Quote functionality
+  const quoteModal = document.getElementById("quote-modal");
+  const quoteText = document.getElementById("quote-text");
+  const quoteAuthor = document.getElementById("quote-author");
+  const closeQuoteButton = document.getElementById("close-quote");
+  const refreshQuoteButton = document.getElementById("refresh-quote");
+
+  // Array of fallback quotes in case the API fails
+  const fallbackQuotes = [
+    { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+    { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+    { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+    { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+    { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" }
+  ];
+
+  function getRandomFallbackQuote() {
+    const randomIndex = Math.floor(Math.random() * fallbackQuotes.length);
+    return fallbackQuotes[randomIndex];
+  }
+
+  async function fetchQuote() {
+    try {
+      // First try the primary API
+      const response = await fetch('https://api.quotable.io/random');
+      
+      if (!response.ok) {
+        throw new Error('Primary API failed');
+      }
+      
+      const data = await response.json();
+      quoteText.textContent = data.content;
+      quoteAuthor.textContent = `- ${data.author}`;
+    } catch (error) {
+      console.log("Primary API failed, trying backup API...");
+      try {
+        // Try the backup API
+        const backupResponse = await fetch('https://type.fit/api/quotes');
+        
+        if (!backupResponse.ok) {
+          throw new Error('Backup API failed');
+        }
+        
+        const quotes = await backupResponse.json();
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+        
+        quoteText.textContent = randomQuote.text;
+        const author = randomQuote.author ? randomQuote.author.replace(', type.fit', '') : 'Unknown';
+        quoteAuthor.textContent = `- ${author}`;
+      } catch (backupError) {
+        console.error("Both APIs failed, using fallback quotes");
+        // If both APIs fail, use a fallback quote
+        const fallbackQuote = getRandomFallbackQuote();
+        quoteText.textContent = fallbackQuote.text;
+        quoteAuthor.textContent = `- ${fallbackQuote.author}`;
+      }
+    }
+    
+    // Always show the modal after getting a quote
+    quoteModal.classList.remove("hidden");
+  }
+
+  // Event listeners
+  refreshQuoteButton.addEventListener("click", () => {
+    console.log("Refresh button clicked");
+    fetchQuote();
+  });
+
+  closeQuoteButton.addEventListener("click", () => {
+    quoteModal.classList.add("hidden");
+  });
+
+  // Show initial quote
+  fetchQuote();
+
   const backgroundContainer = document.createElement("div");
   backgroundContainer.className = "background-container";
   document.body.appendChild(backgroundContainer);
