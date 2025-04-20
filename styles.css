@@ -569,3 +569,60 @@ input[type="checkbox"]:checked+.task-text {
 #close-quote:hover {
   background-color: #4B5563;
 }
+
+/* Mindfulness Exercises Styles */
+#mindfulness-container {
+  position: fixed;
+  top: 120px;
+  right: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  min-width: 300px;
+  max-width: 400px;
+  z-index: 100;
+}
+
+.mindfulness-content h2 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.exercises-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.exercise-item {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.exercise-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.exercise-item h3 {
+  color: #4a90e2;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.exercise-item p {
+  color: #444;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
