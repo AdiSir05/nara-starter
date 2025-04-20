@@ -490,10 +490,105 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Mindfulness Exercises
+  const mindfulnessContainer = document.getElementById("mindfulness-container");
+  const exerciseElements = [
+    document.getElementById("exercise-1"),
+    document.getElementById("exercise-2"),
+    document.getElementById("exercise-3")
+  ];
+
+  const mindfulnessExercises = [
+    "Take 5 deep breaths, focusing on the sensation of air entering and leaving your body",
+    "Practice the 5-4-3-2-1 grounding technique: Name 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste",
+    "Do a 3-minute body scan meditation, focusing on each part of your body from head to toe",
+    "Practice mindful walking for 5 minutes, paying attention to each step and your surroundings",
+    "Write down 3 things you're grateful for today",
+    "Try the RAIN technique: Recognize what's happening, Allow it to be there, Investigate with kindness, and Nurture yourself",
+    "Practice the STOP technique: Stop, Take a breath, Observe, Proceed",
+    "Do a 5-minute loving-kindness meditation, sending good wishes to yourself and others",
+    "Practice mindful eating with your next meal, focusing on the taste, texture, and smell",
+    "Try the 4-7-8 breathing technique: Inhale for 4 seconds, hold for 7 seconds, exhale for 8 seconds",
+    "Do a 3-minute mindful stretching session",
+    "Practice progressive muscle relaxation, tensing and relaxing each muscle group",
+    "Write a short journal entry about your current emotions",
+    "Try the 'leaves on a stream' meditation, imagining your thoughts as leaves floating by",
+    "Practice the 'noting' technique, simply noting your thoughts as they arise without judgment"
+  ];
+
+  function getDailyExercises() {
+    return new Promise((resolve) => {
+      // Get today's date in YYYY-MM-DD format
+      const today = new Date();
+      const todayStr = today.toISOString().split('T')[0];
+      
+      // Check if we have stored exercises for today
+      chrome.storage.local.get(['mindfulnessExercises', 'lastUpdateDate', 'currentCategory'], (data) => {
+        if (data.lastUpdateDate === todayStr && data.mindfulnessExercises) {
+          // Use stored exercises if they exist for today
+          updateExerciseDisplay(data.mindfulnessExercises);
+          // Show container if we're in the mind category
+          if (data.currentCategory === 'mind') {
+            mindfulnessContainer.classList.remove("hidden");
+          }
+          resolve(data.mindfulnessExercises);
+        } else {
+          // Generate new exercises for today
+          const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+          const exercises = [...mindfulnessExercises];
+          const selectedExercises = [];
+          
+          for (let i = 0; i < 3; i++) {
+            const randomIndex = Math.floor((seed + i) % exercises.length);
+            selectedExercises.push(exercises[randomIndex]);
+            exercises.splice(randomIndex, 1);
+          }
+          
+          // Store the new exercises and today's date
+          chrome.storage.local.set({
+            mindfulnessExercises: selectedExercises,
+            lastUpdateDate: todayStr
+          });
+          
+          updateExerciseDisplay(selectedExercises);
+          resolve(selectedExercises);
+        }
+      });
+    });
+  }
+
+  function updateExerciseDisplay(exercises) {
+    exerciseElements.forEach((element, index) => {
+      element.textContent = exercises[index];
+    });
+  }
+
+  // Load initial state
+  chrome.storage.local.get(['currentCategory'], (data) => {
+    if (data.currentCategory === 'mind') {
+      getDailyExercises().then(() => {
+        mindfulnessContainer.classList.remove("hidden");
+      });
+    }
+  });
+
+  // Modify the categoriesContainer click handler to show/hide mindfulness exercises
   categoriesContainer.addEventListener("click", (event) => {
     if (event.target.classList.contains("category-button")) {
       const category = event.target.dataset.category;
       hideHoverCircles();
+
+      // Store the current category
+      chrome.storage.local.set({ currentCategory: category });
+
+      // Show/hide mindfulness exercises based on category
+      if (category === "mind") {
+        getDailyExercises().then(() => {
+          mindfulnessContainer.classList.remove("hidden");
+        });
+      } else {
+        mindfulnessContainer.classList.add("hidden");
+      }
 
       if (category === "others") {
         // Create five empty tasks for the "Others" category
